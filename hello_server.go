@@ -20,7 +20,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	if name == "" {
 		name = "Guest 2"
 	}
-	log.Printf("Received request for %s\n", name)
+	log.Printf("Received request for Mr. %s\n", name)
 	w.Write([]byte(fmt.Sprintf("Hello, Mr. %s\n", name)))
 }
 

@@ -4,7 +4,7 @@ metadata:
   name: backend
 build:
   artifacts:
-    - image: &image-name masoud/go-hello-world
+    - image: masoud/go-hello-world
       context: ./
       docker:
         dockerfile: Dockerfile
@@ -29,9 +29,7 @@ manifests:
         valuesFiles:
           - chart/env-values/values.yaml
         setValueTemplates:
-          image:
-            repository: *image-name
-            tag: '{{.IMAGE_TAG}}@{{.IMAGE_DIGEST}}' # https://skaffold.dev/docs/environment/templating/
+          image: "{{.IMAGE_FULLY_QUALIFIED_masoud_go_hello_world}}" # https://skaffold.dev/docs/environment/templating/
         wait: true
 deploy:
   helm:
