@@ -29,8 +29,8 @@ func main() {
 	r := mux.NewRouter()
 
 	r.HandleFunc("/", handler)
-	r.HandleFunc("/health", healthHandler)
-	r.HandleFunc("/readiness", healthHandler)
+	r.HandleFunc("/health/liveness", healthHandler)
+	r.HandleFunc("/health/readiness", healthHandler)
 	srv := &http.Server{
 		Handler:      r,
 		Addr:         ":8080",
