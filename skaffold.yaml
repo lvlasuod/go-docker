@@ -1,0 +1,44 @@
+apiVersion: skaffold/v4beta4
+kind: Config
+metadata:
+  name: backend
+build:
+  artifacts:
+    - image: &image-name masoud/go-hello-world
+      context: ./
+      docker:
+        dockerfile: Dockerfile
+  tagPolicy:
+    gitCommit:
+      variant: AbbrevTreeSha
+  local:
+    tryImportMissing: true
+    useDockerCLI: true
+    concurrency: 8
+manifests:
+  helm:
+    flags:
+      install:
+        - --atomic
+      upgrade:
+        - --atomic
+    releases:
+      - &masoud-release
+        name: masoud-release
+        chartPath: ./chart
+        valuesFiles:
+          - chart/env-values/values.yaml
+        setValueTemplates:
+          image:
+            repository: *image-name
+            tag: '{{.IMAGE_TAG}}@{{.IMAGE_DIGEST}}' # https://skaffold.dev/docs/environment/templating/
+        wait: true
+deploy:
+  helm:
+    releases:
+      - *masoud-release
+    flags:
+      install:
+        - --atomic
+      upgrade:
+        - --atomic
